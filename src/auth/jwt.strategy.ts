@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import {Injectable, UnauthorizedException} from '@nestjs/common';
 import {UsersService} from "../users/users.service";
+import * as process from "node:process";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -9,22 +10,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "h6Fz@93kdP!vq2rX9$GqLz7nM3!YtBvK"
+            secretOrKey: process.env.JWT_SECRET,
         });
     }
 
     async validate(payload: any) {
-        console.log('Token payload received:', payload); // Лог входящего payload
-
         if (!payload.id) {
-            console.error('Missing id in payload');
             throw new UnauthorizedException();
         }
 
         return {
             id: payload.id,
             email: payload.email,
-            firstName: payload.firstName
+            firstName: payload.firstName,
+            lastName: payload.lastName
         };
     }
 }

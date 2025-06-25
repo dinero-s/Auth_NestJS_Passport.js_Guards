@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {UsersModule} from "../users/users.module";
+import * as process from "node:process";
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import {UsersModule} from "../users/users.module";
     ConfigModule.forRoot(),
     PassportModule,
     JwtModule.register({
-      secret: "h6Fz@93kdP!vq2rX9$GqLz7nM3!YtBvK",
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60m' },
     }),
   ],

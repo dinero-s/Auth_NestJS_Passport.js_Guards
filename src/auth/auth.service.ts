@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import * as process from "node:process";
 
 @Injectable()
 export class AuthService {
@@ -21,12 +22,12 @@ export class AuthService {
             id: user._doc._id,
             email: user._doc.email,
             firstName: user._doc.firstName,
+            lastName: user._doc.lastName,
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + (60 * 60) // 1 час
         };
-        console.log(payload);
         const token = this.jwtService.sign(payload, {
-            secret: "h6Fz@93kdP!vq2rX9$GqLz7nM3!YtBvK"
+            secret: process.env.JWT_SECRET,
         });
 
         return { access_token: token };

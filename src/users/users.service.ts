@@ -26,12 +26,4 @@ export class UsersService {
         const isMatch = await bcrypt.compare(user.password, userDB.password);
         return isMatch ? userDB : null;
     }
-
-    async findOne(email: string): Promise<User | null> {
-        return this.userModel.findOne({ email }).exec();
-    }
-
-    async findById(id: string): Promise<User | null> {
-        return this.userModel.findById(id).exec();
-    }
 }
